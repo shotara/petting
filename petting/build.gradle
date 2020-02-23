@@ -58,6 +58,9 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
 	
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
 	
