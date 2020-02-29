@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Maps;
+import com.petting.interceptor.PettingAuthType;
+import com.petting.interceptor.PreAuth;
 import com.petting.service.MemberService;
 
 @RestController
@@ -32,6 +34,7 @@ public class MemberController {
 	 * 
 	 *  @return
 	 */
+	@PreAuth(PettingAuthType.API_KEY)
 	@GetMapping(value = "/login")
     public ModelAndView getLogin() {
 
@@ -41,6 +44,52 @@ public class MemberController {
         return modelAndView;
     }
 	
+	/**  
+	 * 2020.02.28 By Allen
+	 * 
+	 *  이메일 (자체 회원) 로그인 요청
+	 * 
+	 * @param resultMap
+	 * @param parameters
+	 * @return
+	 */
+	@PreAuth(PettingAuthType.API_KEY)
+    @PostMapping(value = "/login/mail")
+    public ModelMap loginMemberByMail(
+            @ModelAttribute ModelMap resultMap,
+            @RequestBody Map<String, String> parameters
+    ) {
+        HashMap responseMap = Maps.newHashMap();
+        responseMap.put("token", memberService.loginMemberByMail(parameters));
+        resultMap.addAttribute("response", responseMap);
+        resultMap.addAttribute("message", "Login Member By Mail OK.");
+        return resultMap;
+    }
+	
+	/**  
+	 * 2020.02.28 By Allen
+	 * 
+	 *  소셜 로그인 요청
+	 * 
+	 * @param resultMap
+	 * @param parameters
+	 * 		type = 소셜 로그인 종류 ( 1 : KaKao, 2 : Naver )
+	 * 
+	 * @return
+	 */
+	@PreAuth(PettingAuthType.API_KEY)
+    @PostMapping(value = "/login/social")
+    public ModelMap loginMemberBySocial(
+            @ModelAttribute ModelMap resultMap,
+            @RequestBody Map<String, String> parameters
+    ) {
+        HashMap responseMap = Maps.newHashMap();
+        responseMap.put("token", memberService.loginMemberBySocial(parameters));
+        resultMap.addAttribute("response", responseMap);
+        resultMap.addAttribute("message", "Login Member By Social OK.");
+        return resultMap;
+    }
+	
 	/**
 	 * 2020.02.22 By Allen
 	 * 
@@ -48,6 +97,7 @@ public class MemberController {
 	 * 
 	 *  @return
 	 */
+	@PreAuth(PettingAuthType.API_KEY)
 	@GetMapping(value = "/join")
     public ModelAndView getJoin() {
 
@@ -66,6 +116,7 @@ public class MemberController {
 	 * @param parameters
 	 * @return
 	 */
+	@PreAuth(PettingAuthType.API_KEY)
     @PostMapping(value = "/join")
     public ModelMap joinMember(
             @ModelAttribute ModelMap resultMap,
