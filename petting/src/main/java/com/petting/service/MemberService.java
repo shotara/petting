@@ -1,12 +1,16 @@
 package com.petting.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 
 import com.petting.config.GlobalConfig;
+import com.petting.config.PettingThread;
 import com.petting.controller.dto.MemberDto;
 import com.petting.controller.dto.TokenDto;
 import com.petting.model.MemberMapper;
@@ -20,17 +24,48 @@ import ch.qos.logback.core.subst.Token;
 public class MemberService {
 
 	@Autowired
+	private AuthService AuthService;
+
+	@Autowired
 	private MemberMapper memberMapper;
 	
 	@Autowired
 	private GlobalConfig globalConfig;
+	
 	
 	public Member getMemberByMemberAccessToken(String decryptedMemberAccessToken) {
 		return memberMapper.getMemberByMemberAccessToken(decryptedMemberAccessToken);
 	}
 
 	public TokenDto setLoginSession(Member member) {
+		
+		String encryptedApiAccessToken = PettingThread.get().getApiToken() != null ? PettingThread.get().getApiToken() : "";
+		
+		
+        // 필수 변수 체크
+        if(StringUtils.isEmpty(encryptedApiAccessToken) || encryptedApiAccessToken.equals("null")) {
+            return null;
+        }
+		
+        // 유효기간 설정
+//        Date expiredAt = CommonUtil.generateExpiredDate(GlobalConfig.GLOBAL_MEMBER_TOKEN_EXPIRE_IN);
+
+        // API 토큰 복호화
+        String decryptedApiAccessToken = EncryptUtil.decodeBase64(encryptedApiAccessToken);
+
+//        // 회원 액세스 토큰 생성
+//        MemberTokenStore memberTokenStore = authService.generateMemberTokenStore(deviceId, deviceType, member.getMemberSeqNo());
+//
+//        // 회원 로그인 히스토리 저장
+//        if(memberMapper.addMemberSigninHistory(new MemberSigninHistory(member.getMemberSeqNo(), deviceId, deviceType, decryptedApiAccessToken, memberTokenStore.getToken(), method, userAgent, proxyIp, null, null)) != 1) {
+//            throw new Exception();
+//        }
+//        
+        
+        
 		TokenDto tokenDto = new TokenDto(); 
+		tokenDto.setMemberId(member.getMmbrId());
+		tokenDto.setMemberToken("");
 		
 		try {
 			//멤버 토큰
@@ -107,9 +142,36 @@ public class MemberService {
 	}
 
 	public TokenDto loginMemberByMail(Map<String, String> parameters) {
-		// TODO Auto-generated method stub
-		Member member = null;
-		
+
+		// 필수 파라미터 추가
+		String mailAddr = parameters.get("mail_addr") != null ? parameters.get("mail_addr").toString().trim() : "";  // 
+		String password = parameters.get("password") != null ? parameters.get("password").toString().trim() : "";
+		String encryptedPassword="";
+
+		// 필수 파라미터 확인
+        // 파라미터 체크
+        ArrayList<Object> unvalidatedValues = new ArrayList<>();
+        unvalidatedValues.add(mailAddr);
+        unvalidatedValues.add(password);
+        if(!CommonUtil.checkUnvalidatedValues(unvalidatedValues)) {
+        	System.out.println("Paramater Error!");
+        }
+       
+        // 복호화 
+        try {
+//			encryptedPassword = EncryptUtil.encodeSHA256(password);
+			encryptedPassword =password;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}       	
+
+        Member member = memberMapper.getMemberToLoginByMail(mailAddr, encryptedPassword);
+        // 조건에 맞는 회원이 없으면 에러
+        if(member==null) {
+        	System.out.println("ERROR");
+        }
+        
 		return setLoginSession(member);
 	}
 

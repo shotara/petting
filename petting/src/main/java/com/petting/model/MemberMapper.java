@@ -20,4 +20,6 @@ public interface MemberMapper {
 
 	int joinMember(@Param(value = "memberId") String memberId, @Param(value = "password") String password, @Param(value = "phoneNo") String phoneNo);
 
+	Member getMemberToLoginByMail(@Param(value = "mailAddr") String mailAddr, @Param(value = "memberPassword") String memberPassword);
+
 }

@@ -60,6 +60,7 @@ public class MemberController {
             @RequestBody Map<String, String> parameters
     ) {
         HashMap responseMap = Maps.newHashMap();
+        
         responseMap.put("token", memberService.loginMemberByMail(parameters));
         resultMap.addAttribute("response", responseMap);
         resultMap.addAttribute("message", "Login Member By Mail OK.");

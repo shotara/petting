@@ -2,5 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.petting.model.MemberMapper">
 
+    <resultMap id="memberMap" type="com.petting.model.domain.Member">
+        <result property="mmbrId" column="mmbr_id" />
+        <result property="mmbrPw" column="mmbr_pw" />
+        <result property="mmbrNm" column="mmbr_nm" />
+        <result property="mailAdrs" column="mail_adrs" />
+        <result property="mmbrTino" column="mmbr_tino" />
+        <result property="mmbrStusCd" column="mmbr_stus_cd" />
+        <result property="smplJoinCmpnCd" column="smpl_join_cmpn_cd" />
+        <result property="joinChnlDvsnCd" column="join_chnl_dvsn_cd" />
+        <result property="mmbrJoinDtm" column="mmbr_join_dtm" />
+        <result property="dataCretDtm" column="data_cret_dtm" />
+        <result property="dataEditDtm" column="data_edit_dtm" />
+	</resultMap>
 	
+	<!-- SELECT -->
+    <select id="getMemberToLoginByMail" parameterType="map" resultMap="memberMap">
+		SELECT * FROM mmbr WHERE mail_adrs=#{mailAddr} AND mmbr_pw=#{memberPassword}
+    </select>
 </mapper>
