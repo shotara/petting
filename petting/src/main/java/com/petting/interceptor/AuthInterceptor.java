@@ -7,11 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.petting.model.domain.Member;
+import com.petting.config.ErrorCode;
+import com.petting.config.PettingException;
+import com.petting.model.domain.Mmbr;
 import com.petting.service.AuthService;
 import com.petting.service.MemberService;
 import com.petting.util.EncryptUtil;
@@ -19,6 +23,7 @@ import com.petting.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
@@ -45,7 +50,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         // 회원 액세스 토큰 체크
         if(this.isLoginRequired(request, handler)) {
-        	Member member = null;
+        	Mmbr member = null;
             if(StringUtils.isNotEmpty(encryptedMemberAccessToken)) {
                 try {
                     if(!authService.checkAPIToken(encryptedMemberAccessToken)) {

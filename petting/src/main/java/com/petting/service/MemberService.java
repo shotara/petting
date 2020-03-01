@@ -14,7 +14,7 @@ import com.petting.config.PettingThread;
 import com.petting.controller.dto.MemberDto;
 import com.petting.controller.dto.TokenDto;
 import com.petting.model.MemberMapper;
-import com.petting.model.domain.Member;
+import com.petting.model.domain.Mmbr;
 import com.petting.util.CommonUtil;
 import com.petting.util.EncryptUtil;
 
@@ -33,11 +33,11 @@ public class MemberService {
 	private GlobalConfig globalConfig;
 	
 	
-	public Member getMemberByMemberAccessToken(String decryptedMemberAccessToken) {
+	public Mmbr getMemberByMemberAccessToken(String decryptedMemberAccessToken) {
 		return memberMapper.getMemberByMemberAccessToken(decryptedMemberAccessToken);
 	}
 
-	public TokenDto setLoginSession(Member member) {
+	public TokenDto setLoginSession(Mmbr member) {
 		
 		String encryptedApiAccessToken = PettingThread.get().getApiToken() != null ? PettingThread.get().getApiToken() : "";
 		
@@ -48,7 +48,7 @@ public class MemberService {
         }
 		
         // 유효기간 설정
-//        Date expiredAt = CommonUtil.generateExpiredDate(GlobalConfig.GLOBAL_MEMBER_TOKEN_EXPIRE_IN);
+        Date expiredAt = CommonUtil.generateExpiredDate(GlobalConfig.GLOBAL_MEMBER_TOKEN_EXPIRE_IN);
 
         // API 토큰 복호화
         String decryptedApiAccessToken = EncryptUtil.decodeBase64(encryptedApiAccessToken);
@@ -124,7 +124,7 @@ public class MemberService {
 	}
 	
 	public boolean checkMemberParam(int type, String param) {
-		Member member;
+		Mmbr member;
 		switch(type) {
 		case 1:  // member_id 중복 체크
 	        member = memberMapper.getMemberByMemberId(param);
@@ -166,7 +166,7 @@ public class MemberService {
 			e.printStackTrace();
 		}       	
 
-        Member member = memberMapper.getMemberToLoginByMail(mailAddr, encryptedPassword);
+        Mmbr member = memberMapper.getMemberToLoginByMail(mailAddr, encryptedPassword);
         // 조건에 맞는 회원이 없으면 에러
         if(member==null) {
         	System.out.println("ERROR");
@@ -177,7 +177,7 @@ public class MemberService {
 
 	public TokenDto loginMemberBySocial(Map<String, String> parameters) {
 		// TODO Auto-generated method stub
-		Member member = null;
+		Mmbr member = null;
 		
 		return setLoginSession(member);	}
 

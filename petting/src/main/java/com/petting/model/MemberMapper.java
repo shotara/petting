@@ -5,21 +5,21 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.petting.model.domain.Member;
+import com.petting.model.domain.Mmbr;
 
 @Repository
 @Mapper
 @Transactional
 public interface MemberMapper {
 
-	Member getMemberByMemberAccessToken(@Param(value = "mmbrAccessToken") String mmbrAccessToken);
+	Mmbr getMemberByMemberAccessToken(@Param(value = "mmbrAccessToken") String mmbrAccessToken);
 
-	Member getMemberByMemberId(@Param(value = "memberId") String memberId);
+	Mmbr getMemberByMemberId(@Param(value = "memberId") String memberId);
 
-	Member getMemberByPhoneNo(@Param(value = "phoneNo") String phoneNo);
+	Mmbr getMemberByPhoneNo(@Param(value = "phoneNo") String phoneNo);
 
 	int joinMember(@Param(value = "memberId") String memberId, @Param(value = "password") String password, @Param(value = "phoneNo") String phoneNo);
 
-	Member getMemberToLoginByMail(@Param(value = "mailAddr") String mailAddr, @Param(value = "memberPassword") String memberPassword);
+	Mmbr getMemberToLoginByMail(@Param(value = "mailAddr") String mailAddr, @Param(value = "memberPassword") String memberPassword);
 
 }

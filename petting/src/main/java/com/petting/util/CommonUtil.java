@@ -1,6 +1,7 @@
 package com.petting.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,4 +44,10 @@ public class CommonUtil {
 
 	        return true;
 	    }
+
+	public static Date generateExpiredDate(Long time) {
+		Date date = new Date();
+		date.setTime(date.getTime() + time); 
+		return date;
+	}
 }

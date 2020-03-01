@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petting.model.AuthMapper">
+
+    <resultMap id="apiTokenMap" type="com.petting.model.domain.ApiTokn">
+        <result property="apiTokn" column="api_tokn" />
+        <result property="apiToknUseYn" column="api_tokn_use_yn" />
+        <result property="apiToknIsueDtm" column="api_tokn_isue_dtm" />
+        <result property="apiToknExprDtm" column="api_tokn_expr_dtm" />
+        <result property="dataCretDtm" column="data_cre_dtm" />
+        <result property="dataEditDtm" column="data_edit_dtm" />
+	</resultMap>
+	
+	<!-- SELECT -->
+    <select id="getApiToken" parameterType="map" resultMap="apiTokenMap">
+		SELECT * FROM api_tokn WHERE api_tokn=#{apiToken}
+    </select>
+    
+    <!-- UPDATE -->
+    <update id="updateApiToken" parameterType="map" >
+    	UPDATE api_tokn
+    	SET api_tokn_expr_dtm=#{expiredDate}
+    	WHERE api_tokn=#{apiToken}
+    </update>
+</mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.petting.model.MemberMapper">
 
-    <resultMap id="memberMap" type="com.petting.model.domain.Member">
+    <resultMap id="memberMap" type="com.petting.model.domain.Mmbr">
         <result property="mmbrId" column="mmbr_id" />
         <result property="mmbrPw" column="mmbr_pw" />
         <result property="mmbrNm" column="mmbr_nm" />
