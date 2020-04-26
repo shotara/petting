@@ -15,7 +15,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor);
-        super.addInterceptors(registry);
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/rest-api-root/**"); // White list paths
+                //.excludePathPatterns("/static-resource-root/**"); // Black list paths
     }
 }

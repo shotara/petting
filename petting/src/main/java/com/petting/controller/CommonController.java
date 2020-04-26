@@ -12,7 +12,7 @@ import com.petting.interceptor.PreAuth;
 @RequestMapping("/")
 public class CommonController {
 
-	@PreAuth(PettingAuthType.API_KEY)
+//	@PreAuth(PettingAuthType.API_KEY)
 	@GetMapping(value = "/home")
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("index");

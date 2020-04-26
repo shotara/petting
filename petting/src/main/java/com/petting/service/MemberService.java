@@ -160,7 +160,7 @@ public class MemberService {
         // 복호화 
         try {
 //			encryptedPassword = EncryptUtil.encodeSHA256(password);
-			encryptedPassword =password;
+			encryptedPassword = password;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,6 +179,8 @@ public class MemberService {
 		// TODO Auto-generated method stub
 		Mmbr member = null;
 		
-		return setLoginSession(member);	}
+		return setLoginSession(member);	
+		
+	}
 
 }
